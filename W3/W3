@@ -1,0 +1,351 @@
+public class Birthday {
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        double trials = Integer.parseInt(args[1]);
+        int people = 0;
+        double pr = 0;
+        //int count = 0;
+        int[] count = new int[n + 2];
+
+        for (int j = 0; j <= n; j++) {
+            boolean[] birthday = new boolean[n];
+            for (int k = 0; k <= trials; k++) {
+                while (true) {
+                    people++;
+                    int d = (int) ((n - 1) * Math.random());
+                    if (birthday[d]) break;
+                    if (birthday[j] == birthday[k]) {
+                        people++;
+                    }
+                    birthday[d] = true;
+                }
+            }
+
+            for (int i = 0; i < count.length; i++) {
+                pr += count[i];
+                pr /= trials;
+                System.out.print(i + 1 + "\t" + people + "\t" + pr);
+                if (pr >= 0.5) break;
+
+                System.out.println();
+
+
+            }
+        }
+    }
+}
+
+public class Birthday2 {
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        int trials = Integer.parseInt(args[1]);
+        int people = 0;
+        double pr = 0;
+        int[] count = new int[n + 2];
+
+        for (int j = 0; j < trials; j++) {
+            boolean[] birthday = new boolean[n];
+            while (true) {
+                people++;
+                int d = (int) ((n - 1) * Math.random());
+                if (birthday[d]) break;
+
+                count[j] += people;
+                birthday[d] = true;
+            }
+
+            for (int i = 0; i < trials; i++) {
+                if (birthday[j] == birthday[i]) {
+                    people++;
+                }
+                pr += count[j];
+                pr /= trials;
+
+                System.out.print(j + 1 + "\t" + people + "\t" + pr);
+                if (pr >= 0.5) break;
+                System.out.println();
+
+            }
+
+
+        }
+    }
+}
+
+public class Birthday3 {
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        double trials = Integer.parseInt(args[1]);
+        int people = 0;
+        double pr = 0;
+        double count = 0;
+
+        for (int j = 0; j <= n; j++) {
+            boolean[] birthday = new boolean[n];
+            for (int k = 0; k <= trials; k++) {
+                while (true) {
+                    people++;
+                    int d = (int) ((n - 1) * Math.random());
+                    if (birthday[d]) break;
+                    birthday[d] = true;
+                    if (birthday[j] == birthday[k]) {
+                        count++;
+                    }
+                }
+                count += people;
+                pr = count / trials;
+                System.out.print(k + 1 + "\t" + people + "\t" + pr);
+                if (pr >= 0.5) break;
+
+                System.out.println();
+
+
+            }
+        }
+    }
+}
+
+public class DiscreteDistribution {
+    public static void main(String[] args) {
+        int n = args.length - 1;
+        int[] m = new int[n];
+        for (int i = 0; i < n; i++) {
+            m[i] = Integer.parseInt(args[0]);
+        }
+
+        int t = 0;
+        for (int i = 0; i < n; i++) {
+            t += m[i];
+        }
+
+        int r = (int) (t * Math.random());
+        int sum = 0, e = -1;
+        for (int i = 0; i < n && sum <= r; i++) {
+            sum += m[i];
+            e = i;
+            System.out.println(m[i]);
+        }
+
+        //for (int j =)
+
+        System.out.println(e + "\t" + n + "\t" + m[1]);
+    }
+
+}
+
+
+public class DiscreteDistribution2 {
+    public static void main(String[] args) {
+        int m = Integer.parseInt(args[0]);
+        int[] a = new int[args.length - 1];
+        int[] sum = new int[a.length];
+        for (int i = 0; i < a.length; i++) {
+            a[i] = Integer.parseInt(args[i + 1]);
+            sum[i] = sum[i] + a[i];
+        }
+        int b = 0;
+        while (b < m) {
+            int r = (int) (Math.random() * sum[a.length - 1]);
+            if (r < sum[b + 1] && r >= sum[b]) {
+                System.out.print(b - 1 + "");
+                b++;
+            }
+            //System.out.print(b - 1 + "");
+        }
+    }
+}
+
+public class DiscreteDistribution3 {
+    public static void main(String[] args) {
+        //int m = Integer.parseInt(args[0]);
+        int n = args.length;
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = Integer.parseInt(args[i]);
+        }
+
+        int t = 0;
+        for (int i = 1; i < n; i++) {
+            t += a[i];
+        }
+
+        double[] Pr = new double[n];
+        for (int i = 1; i < Pr.length; i++) {
+            final double p = a[i] / (double) t;
+            Pr[i] = Pr[i - 1] + p;
+        }
+
+        for (int j = 0; j < a[0]; j++) {
+            double r = Math.random();
+            int i = 1;
+            while (r > Pr[i]) {
+                i++;
+            }
+
+            System.out.print(i + " ");
+        }
+
+    }
+
+}
+
+public class MagicSquare {
+
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        if (n % 2 == 0) throw new RuntimeException("n must be odd");
+
+        int[][] magic = new int[n][n];
+
+        int row = n - 1;
+        int col = n / 2;
+        magic[row][col] = 1;
+
+        for (int i = 2; i <= n * n; i++) {
+            if (magic[(row + 1) % n][(col + 1) % n] == 0) {
+                row = (row + 1) % n;
+                col = (col + 1) % n;
+            } else {
+                row = (row - 1 + n) % n;
+                // don't change col
+            }
+            magic[row][col] = i;
+        }
+
+        // print results
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (magic[i][j] < 10) System.out.print(" ");  // for alignment
+                if (magic[i][j] < 100) System.out.print(" ");  // for alignment
+                System.out.print(magic[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+    }
+}
+
+public class Minesweeper {
+    public static void main(String[] args) {
+        int m = Integer.parseInt(args[0]);
+        int n = Integer.parseInt(args[1]);
+        int k = Integer.parseInt(args[2]);
+        //int[][] a = new int[m][n];
+
+        boolean[][] mines = new boolean[m + 2][n + 2];
+        double p = (k / (m * (double) n));
+        for (int i = 1; i < m; i++)
+            for (int j = 1; j < n; j++)
+                mines[i][j] = Math.random() < p;
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (mines[i][j]) System.out.print("* ");
+                else System.out.print(" ");
+                System.out.println();
+            }
+            int[][] sol = new int[m + 2][n + 2];
+            for (i = 1; i <= m; i++)
+                for (int j = 1; j <= n; j++)
+                    for (int ii = i - 1; ii <= i + 1; ii++)
+                        for (int jj = j - 1; jj <= j; jj++)
+                            if (mines[ii][jj]) sol[i][j]++;
+
+            System.out.println();
+            for (i = 1; i <= m; i++) {
+                for (int j = 1; j <= n; j++)
+                    if (mines[i][j]) System.out.print("* ");
+                    else System.out.print(sol[i][j] + " ");
+                System.out.println();
+
+            }
+
+        }
+    }
+}
+
+public class ThueMorse {
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        //int distinct = 0;
+        //int[][] a = new int[n][n];
+
+        boolean[][] a = new boolean[n][n];
+        String thue = "0";
+        String morse = "1";
+        for (int i = 1; i < n; i *= 2) {
+            String t = thue;
+            String m = morse;
+            thue += m;
+            morse += t;
+        }
+
+        //for (int i = 0; i < n; i++)
+        //  for (int j = 0; j < n; j++)
+        //   a[i][j] = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                //if (Array.thue[i] != thue[j])
+                System.out.print("  " + a[i][j]);
+            }
+            System.out.println();
+        }
+    }
+}
+
+public class ThueMorse2 {
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+        String thue = "0";
+        String morse = "1";
+
+        for (int i = 1; i <= n; i *= 2) {
+            String t = thue;             // save away values
+            String m = morse;
+            thue += m;
+            morse += t;
+
+        }
+        //System.out.println(thue);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (thue.charAt(i) != thue.charAt(j)) {
+                    System.out.print(" - " + " ");
+                } else {
+                    System.out.print(" + ");
+                }
+            }
+            System.out.println(" ");
+
+        }
+    }
+}
+
+
+
+
+public class ThueMorse3 {
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]);
+
+        boolean[] a = new boolean[n];
+        a[0] = false;
+        for (int i = 2; i < n; i++) {
+            a[i] = (a[i - 1] && !a[i - 1]);
+        }
+
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (a[i] == a[j]) {
+                    System.out.print("+ " + " ");
+                } else {
+                    System.out.print("- ");
+                }
+            }
+            System.out.println(" ");
+        }
+
+    }
+}
